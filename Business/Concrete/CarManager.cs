@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -19,54 +21,54 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
-            if (car.Description.Length>2 && car.DailyPrice>0)
+            if (car.Description.Length<3)
             {
-                _carDal.Add(car);
-                Console.WriteLine("Araç eklemesi başarılı");
-                return;
+                return new ErrorResult(Messages.ProductNameInvalid);
             }
-            Console.WriteLine("Girilen araç hatalıdır.");
+            _carDal.Add(car);
+            return new SuccessResult(Messages.ProductAdded);
+            
         }
 
-        public void Delete(Car car)
-        {
-            _carDal.Delete(car);
-            Console.WriteLine("Araç silindi");
-            return;
-        }
-
-        public List<Car> GetAll()
-        {
-            return _carDal.GetAll();
-        }
-
-        public List<Car> GetById(int id)
+        public IResult Delete(Car car)
         {
             throw new NotImplementedException();
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<Car>> GetAll()
+        {
+            if (DateTime.Now.Hour==22)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.ProductsListed);
+        }
+
+        public IDataResult<Car> GetById(int carId)
+        {
+            return new SuccessDataResult<Car>(_carDal.Get(ca => ca.Id == carId));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             throw new NotImplementedException();
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            return _carDal.GetAll(c => c.BrandId == id);
+            return new SuccessDataResult<Car>(_carDal.Get(ca => ca.BrandId == id));
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
         {
-            return _carDal.GetAll(c => c.ColorId == id);
+            throw new NotImplementedException();
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
-            _carDal.Delete(car);
-            Console.WriteLine("Araç silindi");
-            return;
+            throw new NotImplementedException();
         }
     }
 }
