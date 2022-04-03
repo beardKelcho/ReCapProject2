@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    internal class RentalManager : IRentalService
+    public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
         public RentalManager(IRentalDal rentalDal)
@@ -20,12 +21,18 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            if (rental.ReturnDate > DateTime.Now)
+
+            if (rental.ReturnDate != null)
             {
-                return new ErrorResult("Rental is not completed");
+                _rentalDal.Add(rental);
+                return new SuccessResult(Messages.ProductAdded);
+            }
+            else
+            {
+                return new ErrorResult(Messages.ProductInvalid);
             }
             _rentalDal.Add(rental);
-            return new SuccessResult("Rental Added");
+            return new SuccessResult(Messages.ProductAdded);
         }
 
         public IResult Delete(Rental rental)

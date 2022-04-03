@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    [Keyless]
+    
     public class Color : IEntity
     {
-        public int ColordId { get; set; }
+        public int ColorId { get; set; }
         public string ColorName { get; set; }
     }
 }
