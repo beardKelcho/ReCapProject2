@@ -22,27 +22,30 @@ namespace Business.Concrete
 
         IResult IBrandService.Add(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Add(brand);
+            return new SuccessResult("Brand added");
         }
 
         IResult IBrandService.Delete(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Delete(brand);
+            return new SuccessResult("Brand deleted");
         }
 
         IDataResult<List<Brand>> IBrandService.GetAll()
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(),"Brands listed");
         }
 
         IDataResult<Brand> IBrandService.GetById(int brandId)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<Brand>(_brandDal.Get(br => br.BrandId == brandId));
         }
 
         IResult IBrandService.Update(Brand brand)
         {
-            throw new NotImplementedException();
+            _brandDal.Update(brand);
+            return new SuccessResult("Brand updated");
         }
     }
 }

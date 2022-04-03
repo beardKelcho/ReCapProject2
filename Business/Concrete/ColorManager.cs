@@ -22,21 +22,17 @@ namespace Business.Concrete
         public IResult Add(Color color)
         {
             _colorDal.Add(color);
-            return new SuccessResult(Messages.ProductAdded);
+            return new SuccessResult("Color added");
         }
 
         public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
-            return new SuccessResult(Messages.ProductAdded);
+            return new SuccessResult("Color deleted");
         }
 
         public IDataResult<List<Color>> GetAll()
         {
-            if (DateTime.Now.Hour == 22)
-            {
-                return new ErrorDataResult<List<Color>>(Messages.MaintenanceTime);
-            }
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll(), Messages.ProductsListed);
         }
 
@@ -47,7 +43,8 @@ namespace Business.Concrete
 
         public IResult Update(Color color)
         {
-            throw new NotImplementedException();
+            _colorDal.Add(color);
+            return new SuccessResult("Color updated");
         }
     }
 }

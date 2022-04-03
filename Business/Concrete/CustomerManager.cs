@@ -21,7 +21,7 @@ namespace Business.Concrete
         public IResult Add(Customer customer)
         {
             _customerDal.Add(customer);
-            return new SuccessResult(Messages.ProductAdded);
+            return new SuccessResult("Customer added");
         }
 
         public IResult Delete(Customer customer)
